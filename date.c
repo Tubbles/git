@@ -292,6 +292,7 @@ const char *show_date(timestamp_t time, int tz, struct date_mode mode)
 	struct tm human_tm = { 0 };
 	int human_tz = -1;
 	static struct strbuf timebuf = STRBUF_INIT;
+	static struct strbuf timebuf_relative = STRBUF_INIT;
 
 	if (mode.type == DATE_UNIX) {
 		strbuf_reset(&timebuf);
@@ -318,9 +319,9 @@ const char *show_date(timestamp_t time, int tz, struct date_mode mode)
 	}
 
 	if (mode.type == DATE_RELATIVE) {
-		strbuf_reset(&timebuf);
-		show_date_relative(time, &timebuf);
-		return timebuf.buf;
+		strbuf_reset(&timebuf_relative);
+		show_date_relative(time, &timebuf_relative);
+		return timebuf_relative.buf;
 	}
 
 	if (mode.local)

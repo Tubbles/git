@@ -613,8 +613,14 @@ void pp_user_info(struct pretty_print_context *pp,
 			    show_ident_date(&ident, DATE_MODE(RFC2822)));
 		break;
 	case CMIT_FMT_FULLER:
-		strbuf_addf(sb, "%sDate: %s\n", what,
-			    show_ident_date(&ident, pp->date_mode));
+		if (pp->date_mode.type != DATE_RELATIVE) {
+			strbuf_addf(sb, "%sDate: %s (%s)\n", what,
+				show_ident_date(&ident, pp->date_mode),
+				show_ident_date(&ident, DATE_MODE(RELATIVE)));
+		} else {
+			strbuf_addf(sb, "%sDate: %s\n", what,
+				show_ident_date(&ident, pp->date_mode));
+		}
 		break;
 	default:
 		/* notin' */
